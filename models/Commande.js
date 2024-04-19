@@ -1,7 +1,10 @@
+// Imports
 const sequelize = require("sequelize");
+const Bar = require("./Bar");
 const Biere = require("./Biere");
 const db = require("../config/database");
 
+// Model
 const Commande = db.define("Command", {
   command_id: {
     type: sequelize.INTEGER,
@@ -17,6 +20,8 @@ const Commande = db.define("Command", {
   },
 });
 
+// Associations
+Commande.belongsTo(Bar);
 Commande.belongsToMany(
   Biere,
   { through: Biere_Commande },
