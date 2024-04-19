@@ -1,4 +1,5 @@
-const Bar = require('../model/Bar.js');
+const Bar = require('../models/Bar');
+const Biere = require('../models/Biere');
 
 const getBars = (req, res) => {
     Bar.findAll()
@@ -6,15 +7,16 @@ const getBars = (req, res) => {
 };
 
 const getBarProfil = (req, res) => {
-
+  Product.findAll({ where: { id: req.params.id } })
+  .then((products) => res.json(products));
 };
 
 const addBar = (req, res) => {
     const bar = {
-        name: req.param.name,
-        tel: req.param.tel,        
-        email: req.param.email,        
-        descritpion: req.param.descritpion
+        name: req.params.name,
+        tel: req.params.tel,        
+        email: req.params.email,        
+        descritpion: req.params.descritpion
       };
       Bar.create(bar)
         .then((bar) => {
@@ -27,10 +29,10 @@ const addBar = (req, res) => {
 
 const editbar = (req, res) => {
     const bar = {
-        name: req.param.name,
-        tel: req.param.tel,        
-        email: req.param.email,        
-        descritpion: req.param.descritpion
+        name: req.params.name,
+        tel: req.params.tel,        
+        email: req.params.email,        
+        descritpion: req.params.descritpion
       };
     
       Bar.update(bar, { where: { id: req.params.id } })
@@ -47,6 +49,18 @@ const deleteBar = (req, res) => {
 };
 
 const getAllBeersFromBar = (req, res) => {
+  const barId = req.params.id;
+  bar = findByPk(barId);
+
+  if(!bar){
+    res.send(`le bar ${barId} n'existe pas`)
+  }
+
+  Biere.findAll({where : {barId}})
+  .then((bar) => res.json(bar))
+        .catch((err) => {
+          res.send(err);
+        });
 };
 
 
