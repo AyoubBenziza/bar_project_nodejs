@@ -13,15 +13,13 @@ const Biere = db.define("biere", {
 });
 
 //Implémentation des liens entre les bases
-Biere.belongsTo(Bar);
-Biere.belongsToMany(
-  Commande,
-  { through: Biere_Commande },
-  {
+Biere.associate = (models) => {
+  Biere.belongsTo(Bar);
+  Biere.belongsToMany(Commande, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
-  }
-);
+  });
+};
 
 //export
 module.exports = Biere;
