@@ -12,11 +12,11 @@ const Bar = db.define("bar", {
 });
 
 Bar.associate = (models) => {
-  Bar.hasMany(Biere, {
+  Bar.hasMany(models.Biere, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
-  Bar.hasMany(Commande, {
+  Bar.hasMany(models.Commande, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });

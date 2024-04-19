@@ -5,7 +5,7 @@ const Biere = require("./Biere");
 const db = require("../config/database");
 
 // Model
-const Commande = db.define("Commande", {
+const Commande = db.define("commande", {
   id: {
     type: sequelize.INTEGER,
     primaryKey: true,
@@ -22,10 +22,10 @@ const Commande = db.define("Commande", {
 
 // Associations
 Commande.associate = (models) => {
-  Commande.belongsTo(Bar);
+  Commande.belongsTo(models.Bar);
   Commande.belongsToMany(
-    Biere,
-    { through: "Biere_Commande" },
+    models.Biere,
+    { through: "BiereCommande" },
     {
       onDelete: "CASCADE",
       onUpdate: "CASCADE",

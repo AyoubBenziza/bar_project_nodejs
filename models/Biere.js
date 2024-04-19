@@ -14,10 +14,10 @@ const Biere = db.define("biere", {
 
 //Implémentation des liens entre les bases
 Biere.associate = (models) => {
-  Biere.belongsTo(Bar);
+  Biere.belongsTo(models.Bar);
   Biere.belongsToMany(
-    Commande,
-    { through: "Biere_Commande" },
+    models.Commande,
+    { through: "BiereCommande" },
     {
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
