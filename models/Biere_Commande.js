@@ -15,7 +15,7 @@ const Biere_Commande = sequelize.define({
     type: sequelize.DataTypes.INTEGER,
     references: {
       model: Commande,
-      key: "id",
+      key: "command_id",
     },
   },
 });
