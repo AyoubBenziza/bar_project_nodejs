@@ -25,7 +25,7 @@ router.put("/:id_bar", editbar);
 // Suprimer un bar
 router.delete("/:id_bar", deleteBar);
 
-// Récupérer la liste des biere d'un bières d'un bar
+// Récupérer la liste des biere d'un bar
 router.get("/:id_bar/biere", getAllBeersFromBar);
 
 module.exports = router;
