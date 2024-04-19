@@ -4,11 +4,11 @@ const {
   addBar,
   editbar,
   deleteBar,
+  getAllBeersFromBar
 } = require("../controllers/barsController");
 
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers/barsController");
 
 // Récupérer liste des bars
 router.get("/", getBars);
