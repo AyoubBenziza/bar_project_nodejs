@@ -23,10 +23,14 @@ const Commande = db.define("Commande", {
 // Associations
 Commande.associate = (models) => {
   Commande.belongsTo(Bar);
-  Commande.belongsToMany(Biere, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
+  Commande.belongsToMany(
+    Biere,
+    { through: "Biere_Commande" },
+    {
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    }
+  );
 };
 
 module.exports = Commande;
