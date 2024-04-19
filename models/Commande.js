@@ -1,4 +1,5 @@
 const sequelize = require("sequelize");
+const Biere = require("./Biere");
 const db = require("../config/database");
 
 const Commande = db.define("Command", {
@@ -17,7 +18,7 @@ const Commande = db.define("Command", {
 });
 
 Commande.belongsToMany(
-  Commande,
+  Biere,
   { through: Biere_Commande },
   {
     onDelete: "CASCADE",
