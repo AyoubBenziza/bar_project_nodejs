@@ -15,28 +15,25 @@ const getBarProfil = (req, res) => {
 
 // Crée un bar
 const addBar = (req, res) => {
-    const bar = {
-        name: req.param.name,
-        tel: req.param.tel,        
-        email: req.param.email,        
-        descritpion: req.param.descritpion
-      };
-      Bar.create(bar)
-        .then((bar) => {
-          res.send(bar);
-        })
-        .catch((err) => {
-          res.send(err);
-        });
+ 
+  const bar = {
+    name: req.body.name,
+    description: req.body.description,
+    tel: req.body.tel,
+    email: req.body.email,
+    adresse: req.body.adresse,
+  };
+      
+  Bar.create(bar).then((queryResult) => res.json(queryResult));      
 };
 
 // Modifie un bar en prenant en paramètre son id
 const editbar = (req, res) => {
     const bar = {
-        name: req.param.name,
-        tel: req.param.tel,        
-        email: req.param.email,        
-        descritpion: req.param.descritpion
+        name: req.body.name,
+        tel: req.body.tel,        
+        email: req.body.email,        
+        descritpion: req.body.descritpion
       };
     
       Bar.update(bar, { where: { id: req.params.id_bar } })
@@ -55,7 +52,20 @@ const deleteBar = (req, res) => {
 
 // Récupère toutes les bières d'un bar
 const getAllBeersFromBar = (req, res) => {
+  barId = req.params.id_bar;
 
+  // Recherche le bar avec l'id correspondant
+  Bar.findOne({ where: { id: barId } })
+    .then((bar) => {
+      if (!bar) {
+        return res.status(404).json({ error: 'Bar not found' });
+      }      
+      // Retourne toutes les bières liée à l'id du bar
+      Biere.findAll({ where: { id: barId } })
+        .then((beers) => {
+          res.json(beers);
+        })
+      });
 };
 
 // Ajoute une bière dans un bar

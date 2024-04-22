@@ -17,7 +17,10 @@ router.get("/:id_bar/biere",validateIdBar, getAllBeersFromBar);
 // Ajouter un bar
 router.post("/", addBar);
 
-// Récupérer la liste des biere d'un bar
+// Ajoute une bière à un bar
+router.post(":id_bar/biere",validateIdBar,addBeerIntoBar)
+
+// Ajoute une commande à un bar
 router.post(":id_bar/biere",validateIdBar,addBeerIntoBar)
 
 // Modifier un bar
