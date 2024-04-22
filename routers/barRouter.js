@@ -1,6 +1,18 @@
-const {   getBars,getBarProfil,addBar,deleteBar,getAllBeersFromBar,editbar,addCommandeIntoBar } = require("../controllers/barController");
+const {
+  getBars,
+  getBarProfil,
+  addBar,
+  deleteBar,
+  getAllBeersFromBar,
+  editbar,
+  addCommandeIntoBar,
+} = require("../controllers/barController");
 
-const { validateIdBar } = require("../validateurs/barValidator");
+const {
+  validateIdBar,
+  validateBarBody,
+} = require("../validateurs/barValidator");
+const validate = require("../validateurs/validate");
 
 const express = require("express");
 const router = express.Router();
@@ -9,21 +21,21 @@ const router = express.Router();
 router.get("/", getBars);
 
 // Récupérer le profil d'un bar
-router.get("/:idBar", validateIdBar, getBarProfil);
+router.get("/:idBar", validateIdBar, validate, getBarProfil);
 
 // Récupérer la liste des biere d'un bar
-router.get("/:idBar/biere", validateIdBar, getAllBeersFromBar);
+router.get("/:idBar/biere", validateIdBar, validate, getAllBeersFromBar);
 
 // Ajouter un bar
-router.post("/", addBar);
+router.post("/", validateBarBody, addBar);
 
 // Ajoute une commande au bar
-router.post("/:idBar/commande", validateIdBar, addCommandeIntoBar);
+router.post("/:idBar/commande", validateIdBar, validate, addCommandeIntoBar);
 
 // Modifier un bar
-router.put("/:idBar", validateIdBar, editbar);
+router.put("/:idBar", validateBarBody, validateIdBar, validate, editbar);
 
 // Suprimer un bar
-router.delete("/:idBar", validateIdBar, deleteBar);
+router.delete("/:idBar", validateIdBar, validate, deleteBar);
 
 module.exports = router;
