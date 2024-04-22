@@ -1,22 +1,20 @@
-const Bar = require('../model/Bar.js');
+const Bar = require('../models/Bar.js');
 const Bierre = require('../models/Biere.js')
 
-const barController = {};
-
 // Récupère tous les bars
-barController.getBars = (req, res) => {
+const getBars = (req, res) => {
     Bar.findAll()
     .then((bar) => res.json(bar));
 };
 
 // Récupère les caractréristique d'un bar en prenant son id en paramètre
-barController.getBarProfil = (req, res) => {
-  Bar.findByPk(parseInt(req.param.id_bar))
-  .then((bar) => res.json(bar));
+const getBarProfil = (req, res) => {
+  Bar.findAll({ where: { id: req.params.id_bar } })
+    .then((bar) => res.json(bar));
 };
 
 // Crée un bar
-barController.addBar = (req, res) => {
+const addBar = (req, res) => {
     const bar = {
         name: req.param.name,
         tel: req.param.tel,        
@@ -33,7 +31,7 @@ barController.addBar = (req, res) => {
 };
 
 // Modifie un bar en prenant en paramètre son id
-barController.editbar = (req, res) => {
+const editbar = (req, res) => {
     const bar = {
         name: req.param.name,
         tel: req.param.tel,        
@@ -49,20 +47,20 @@ barController.editbar = (req, res) => {
 };
 
 // Supprime un bar en prenant en paramètre son id
-barController.deleteBar = (req, res) => {
+const deleteBar = (req, res) => {
     Bar.destroy({ where: { id: req.params.id_bar } }).then(() =>
       res.send('Bar deleted')
     );
 };
 
 // Récupère toutes les bières d'un bar
-barController.getAllBeersFromBar = (req, res) => {
+const getAllBeersFromBar = (req, res) => {
 
 };
 
 // Ajoute une bière dans un bar
-barController.addBeerIntoBar = (req,res) => {
+const addBeerIntoBar = (req,res) => {
   Bierre.findAll({where : {barid : req.param.id_bar}} )
 }
 
-module.exports = barController;
+module.exports = {getBars,getBarProfil,addBar,deleteBar,getAllBeersFromBar,editbar,addBeerIntoBar};
