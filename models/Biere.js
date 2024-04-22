@@ -3,7 +3,7 @@ const sequelize = require("sequelize");
 const db = require("../config/database");
 
 //Modèle de Biere
-const Biere = db.define("biere", {
+const Biere = db.define("Biere", {
   id: { type: sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: sequelize.STRING },
   degree: { type: sequelize.REAL },
