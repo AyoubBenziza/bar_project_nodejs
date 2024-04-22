@@ -4,19 +4,17 @@ const getAllBeers = (req, res) => {
   Biere.findAll().then((bieres) => res.json(bieres));
 };
 
-const getBeer = (req, res) => {
-  const biere = {
-    name: req.body.name,
-    degree: parseFloat(req.body.degree),
-    price: parseFloat(req.body.price),
-  }
-    .then((biere) => {
-      res.send(biere);
-    })
-    .catch((err) => {
-      res.send(err);
+const getBeer = async (req, res) => {
+  try {
+    Biere.findByPk(req.params.idBiere).then((biere) => {
+      res.json(biere);
     });
+  } catch (error) {
+    res.send(error.message);
+    console.log(`verif`);
+  }
 };
+
 const updateBeer = (req, res) => {
   const biere = {
     name: req.body.name,
@@ -24,7 +22,7 @@ const updateBeer = (req, res) => {
     price: parseFloat(req.body.price),
   };
 
-  Biere.update(biere, { where: { id: req.params.id } })
+  Biere.update(biere, { where: { id: req.params.idBiere } })
     .then((biere) => res.json(biere))
     .catch((err) => {
       res.send(err);
@@ -32,7 +30,7 @@ const updateBeer = (req, res) => {
 };
 
 const deleteBeer = (req, res) => {
-  Biere.destroy({ where: { id: req.params.id } }).then(() =>
+  Biere.destroy({ where: { id: req.params.idBiere } }).then(() =>
     res.send("Bière effacée")
   );
 };
