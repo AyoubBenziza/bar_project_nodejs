@@ -1,5 +1,6 @@
 const Bar = require('../models/Bar.js');
-const Bierre = require('../models/Biere.js')
+const Bierre = require('../models/Biere.js');
+const Commande = require('../models/Commande.js');
 
 // Récupère tous les bars
 const getBars = (req, res) => {
@@ -9,7 +10,7 @@ const getBars = (req, res) => {
 
 // Récupère les caractréristique d'un bar en prenant son id en paramètre
 const getBarProfil = (req, res) => {
-  Bar.findAll({ where: { id: req.params.id_bar } })
+  Bar.findAll({ where: { id: req.params.idBar } })
     .then((bar) => res.json(bar));
 };
 
@@ -29,48 +30,58 @@ const addBar = (req, res) => {
 
 // Modifie un bar en prenant en paramètre son id
 const editbar = (req, res) => {
-    const bar = {
-        name: req.body.name,
-        tel: req.body.tel,        
-        email: req.body.email,        
-        descritpion: req.body.descritpion
-      };
+  const bar = {
+    name: req.body.name,
+    description: req.body.description,
+    tel: req.body.tel,
+    email: req.body.email,
+    adresse: req.body.adresse,
+  };
     
-      Bar.update(bar, { where: { id: req.params.id_bar } })
-        .then((bar) => res.json(bar))
-        .catch((err) => {
-          res.send(err);
-        });
+  Bar.update(bar, { where: { id: req.params.idBar } }).then((queryResult) =>
+    res.json(queryResult)
+  );
 };
 
 // Supprime un bar en prenant en paramètre son id
 const deleteBar = (req, res) => {
-    Bar.destroy({ where: { id: req.params.id_bar } }).then(() =>
+    Bar.destroy({ where: { id: req.params.idBar } }).then(() =>
       res.send('Bar deleted')
     );
 };
 
 // Récupère toutes les bières d'un bar
-const getAllBeersFromBar = (req, res) => {
-  barId = req.params.id_bar;
+const getAllBeersFromBar = async (req, res) => {
+  console.log(`salut`);
 
-  // Recherche le bar avec l'id correspondant
-  Bar.findOne({ where: { id: barId } })
-    .then((bar) => {
-      if (!bar) {
-        return res.status(404).json({ error: 'Bar not found' });
-      }      
-      // Retourne toutes les bières liée à l'id du bar
-      Biere.findAll({ where: { id: barId } })
-        .then((beers) => {
-          res.json(beers);
+  const bar = await Bar.findByPk(req.params.idBar)
+
+    bar.getBieres()
+    .then((biere) => {
+      res.json(biere);
+    })
+    .catch((err) => {
+      res.send(err);
+    });      
+  };
+
+// Ajoute une commande dans un bar
+const addCommandeIntoBar = (req,res) => {
+  const commande =  {
+    name: req.body.name,
+    price: req.body.price,
+    date: req.body.date,
+    status: "in progress",
+    barId: req.params.idBar
+    //le contenu du body + le bar id en champ "barId"
+    };
+    Commande.create(commande)
+        .then((commande) => {
+          res.send(commande);
         })
-      });
-};
-
-// Ajoute une bière dans un bar
-const addBeerIntoBar = (req,res) => {
-  Bierre.findAll({where : {barid : req.param.id_bar}} )
+        .catch((err) => {
+          res.send(err);
+        });
 }
 
-module.exports = {getBars,getBarProfil,addBar,deleteBar,getAllBeersFromBar,editbar,addBeerIntoBar};
+module.exports = {getBars,getBarProfil,addBar,deleteBar,getAllBeersFromBar,editbar,addCommandeIntoBar};
