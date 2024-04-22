@@ -11,7 +11,7 @@ const {
   validateBodyBeer,
 } = require("../validateurs/biereValidator");
 
-const validate = require("../validateurs/biereValidator");
+const validate = require("../validateurs/validate");
 
 const express = require("express");
 
@@ -19,13 +19,7 @@ const router = express.Router();
 
 router.get("", getAllBeers);
 router.get("/:idBiere", getBeer);
-router.put(
-  "/:idBiere",
-  validateIdBeer,
-  validateBodyBeer,
-  /*  validate, */ updateBeer
-);
-router.delete("/:idBiere", validateIdBeer, /* validate, */ deleteBeer);
-
+router.put("/:idBiere", validateIdBeer, validateBodyBeer, validate, updateBeer);
+router.delete("/:idBiere", validateIdBeer, validate, deleteBeer);
 
 module.exports = router;
