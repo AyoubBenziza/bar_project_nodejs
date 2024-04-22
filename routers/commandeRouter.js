@@ -10,12 +10,13 @@ const {
 const router = express.Router();
 
 // Commande
-router.get("/:id_command", getCommand);
-router.put("/:id_command", updateCommand);
-router.delete("/:id_command", deleteCommand);
+router.get("/:idCommand", getCommand);
+router.put("/:idCommand", updateCommand);
+router.delete("/:idCommand", deleteCommand);
 
 // Biere_commande
-router.post("/:id_command/biere/:id_beer", addBeer);
-router.delete(":id_command/biere/:id_beer", deleteBeer);
+router.post("/:idCommand/biere/:idBeer", addBeer);
+router.delete(":idCommand/biere/:idBeer", deleteBeer);
 
+// Exports
 module.exports = router;

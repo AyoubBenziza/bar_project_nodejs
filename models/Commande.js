@@ -18,4 +18,5 @@ const Commande = db.define("Commande", {
   },
 });
 
+// Exports
 module.exports = Commande;
