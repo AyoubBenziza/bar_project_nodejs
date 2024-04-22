@@ -1,7 +1,7 @@
 // Récupération des méthodes
 const {
   updateBeer,
-  suppBeer,
+  deleteBeer,
   getAllBeers,
   getBeer,
 } = require("../controllers/biereController");
@@ -17,15 +17,15 @@ const express = require("express");
 
 const router = express.Router();
 
-// router.get("", getAllBeers);
-// router.get("/:id_biere", getBeer);
-// router.put(
-//   "biere/id_biere",
-//   validateIdBeer,
-//   validateBodyBeer,
-//   validate,
-//   updateBeer
-// );
-// router.delete("/biere/:id_biere", validateIdBeer, validate, suppBeer);
+router.get("", getAllBeers);
+router.get("/:idBiere", getBeer);
+router.put(
+  "/:idBiere",
+  //validateIdBeer,
+  // validateBodyBeer,
+  //   validate,
+  updateBeer
+);
+router.delete("/:idBiere", /* validateIdBeer, validate, */ deleteBeer);
 
 module.exports = router;
