@@ -3,6 +3,7 @@ const Bar = require("./Bar");
 const Biere = require("./Biere");
 const Commande = require("./Commande");
 
+// Associations
 const Association = () => {
   Biere.belongsToMany(
     Commande,
@@ -28,4 +29,5 @@ const Association = () => {
   Bar.hasMany(Commande);
 };
 
+// Exports
 module.exports = { Association };

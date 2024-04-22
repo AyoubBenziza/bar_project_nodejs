@@ -3,7 +3,7 @@ const sequelize = require("sequelize");
 const db = require("../config/database");
 
 // Model
-const Commande = db.define("commande", {
+const Commande = db.define("Commande", {
   id: {
     type: sequelize.INTEGER,
     primaryKey: true,
@@ -18,4 +18,5 @@ const Commande = db.define("commande", {
   },
 });
 
+// Exports
 module.exports = Commande;
