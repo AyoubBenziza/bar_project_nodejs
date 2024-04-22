@@ -52,7 +52,6 @@ const deleteBar = (req, res) => {
 
 // Récupère toutes les bières d'un bar
 const getAllBeersFromBar = async (req, res) => {
-  console.log(`salut`);
 
   const bar = await Bar.findByPk(req.params.idBar)
 
@@ -67,6 +66,7 @@ const getAllBeersFromBar = async (req, res) => {
 
 // Ajoute une commande dans un bar
 const addCommandeIntoBar = (req,res) => {
+  console.log(`test`);
   const commande =  {
     name: req.body.name,
     price: req.body.price,
