@@ -19,7 +19,7 @@ const getCommand = (req, res) => {
 const addBeer = async (req, res) => {
   try {
     const command = await Commande.findByPk(req.params.idCommand);
-    const beer = await Biere.findByPk(req.params.idBeer);
+    const beer = await Biere.findByPk(req.params.idBiere);
     if (beer === null || command === null) {
       throw new Error(`La commande ou la bière n'existe pas`);
     }
@@ -57,7 +57,7 @@ const deleteBeer = async (req, res) => {
   try {
     const command = await Commande.findByPk(req.params.idCommand);
     command
-      .removeBiere({ where: { id: req.params.idBeer } })
+      .removeBiere({ where: { id: req.params.idBiere } })
       .then((result) => res.send("Supression de la bière effectuée"));
   } catch (err) {
     res.send(err.message);
