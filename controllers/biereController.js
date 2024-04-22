@@ -20,7 +20,7 @@ const updateBeer = (req, res) => {
   Biere.update(biere, { where: { id: req.params.idBiere } })
     .then((biere) => res.json(biere))
     .catch((err) => {
-      res.send(err);
+      res.send(err.message);
     });
 };
 
