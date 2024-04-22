@@ -27,4 +27,5 @@ router.put(
 );
 router.delete("/:idBiere", validateIdBeer, /* validate, */ deleteBeer);
 
+
 module.exports = router;
