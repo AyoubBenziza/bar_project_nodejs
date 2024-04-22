@@ -10,7 +10,7 @@ const validateBodyBeer = [
   body("price")
     .notEmpty()
     .isFloat({ min: 0 })
-    .withMessage("degree must be a number over 0"),
+    .withMessage("price must be a number over 0"),
 ];
 
 module.exports = { validateBodyBeer, validateIdBeer };
