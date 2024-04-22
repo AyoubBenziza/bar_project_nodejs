@@ -21,21 +21,21 @@ const router = express.Router();
 router.get("/", getBars);
 
 // Récupérer le profil d'un bar
-router.get("/:idBar", validateIdBar, validate, getBarProfil);
+router.get("/:barId", validateIdBar, validate, getBarProfil);
 
 // Récupérer la liste des biere d'un bar
-router.get("/:idBar/biere", validateIdBar, validate, getAllBeersFromBar);
+router.get("/:barId/biere", validateIdBar, validate, getAllBeersFromBar);
 
 // Ajouter un bar
 router.post("/", validateBarBody, addBar);
 
 // Ajoute une commande au bar
-router.post("/:idBar/commande", validateIdBar, validate, addCommandeIntoBar);
+router.post("/:barId/commande", validateIdBar, validate, addCommandeIntoBar);
 
 // Modifier un bar
-router.put("/:idBar", validateBarBody, validateIdBar, validate, editbar);
+router.put("/:barId", validateBarBody, validateIdBar, validate, editbar);
 
 // Suprimer un bar
-router.delete("/:idBar", validateIdBar, validate, deleteBar);
+router.delete("/:barId", validateIdBar, validate, deleteBar);
 
 module.exports = router;
