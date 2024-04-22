@@ -1,5 +1,5 @@
 const { param } = require('express-validator');
 
-const validateIdBar= [param('id').notEmpty().isNumeric()];
+const validateIdBar= [param('idBar').notEmpty().isNumeric()];
 
 module.exports = { validateIdBar };
