@@ -1,12 +1,4 @@
-const {
-  getBars,
-  getBarProfil,
-  addBar,
-  deleteBar,
-  getAllBeersFromBar,
-  editbar,
-  getAllBeersFromBar,
-} = require("../controllers/barController");
+const {   getBars,getBarProfil,addBar,deleteBar,getAllBeersFromBar,editbar,addCommandeIntoBar } = require("../controllers/barController");
 
 const { validateIdBar } = require("../validateurs/barValidator");
 
