@@ -4,15 +4,10 @@ const getAllBeers = (req, res) => {
   Biere.findAll().then((bieres) => res.json(bieres));
 };
 
-const getBeer = async (req, res) => {
-  try {
-    Biere.findByPk(req.params.idBiere).then((biere) => {
-      res.json(biere);
-    });
-  } catch (error) {
-    res.send(error.message);
-    console.log(`verif`);
-  }
+const getBeer = (req, res) => {
+  Biere.findByPk(req.params.idBiere).then((biere) => {
+    res.json(biere);
+  });
 };
 
 const updateBeer = (req, res) => {
