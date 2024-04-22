@@ -5,17 +5,9 @@ const getAllBeers = (req, res) => {
 };
 
 const getBeer = (req, res) => {
-  const biere = {
-    name: req.body.name,
-    degree: parseFloat(req.body.degree),
-    price: parseFloat(req.body.price),
-  }
-    .then((biere) => {
-      res.send(biere);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+  Biere.findByPk(req.params.idBiere).then((biere) => {
+    res.json(biere);
+  });
 };
 const updateBeer = (req, res) => {
   const biere = {
