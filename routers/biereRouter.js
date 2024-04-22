@@ -21,11 +21,11 @@ router.get("", getAllBeers);
 router.get("/:idBiere", getBeer);
 router.put(
   "/:idBiere",
-  //validateIdBeer,
-  // validateBodyBeer,
-  //   validate,
-  updateBeer
+  validateIdBeer,
+  validateBodyBeer,
+  /*  validate, */ updateBeer
 );
-router.delete("/:idBiere", /* validateIdBeer, validate, */ deleteBeer);
+router.delete("/:idBiere", validateIdBeer, /* validate, */ deleteBeer);
+
 
 module.exports = router;
