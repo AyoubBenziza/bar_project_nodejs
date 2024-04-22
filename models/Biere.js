@@ -1,6 +1,4 @@
 //Import des fichiers pertinents
-const Bar = require("./Bar");
-const Commande = require("./Commande");
 const sequelize = require("sequelize");
 const db = require("../config/database");
 
@@ -11,19 +9,6 @@ const Biere = db.define("biere", {
   degree: { type: sequelize.REAL },
   price: { type: sequelize.REAL, validate: { min: 0.01 } },
 });
-
-//Implémentation des liens entre les bases
-Biere.associate = (models) => {
-  Biere.belongsTo(models.Bar);
-  Biere.belongsToMany(
-    models.Commande,
-    { through: "BiereCommande" },
-    {
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
-    }
-  );
-};
 
 //export
 module.exports = Biere;

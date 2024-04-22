@@ -1,7 +1,5 @@
 const sequelize = require("sequelize");
 const db = require("../config/database");
-const Commande = require("./Commande");
-const Biere = require("./Biere");
 
 const Bar = db.define("bar", {
   id: { type: sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -10,16 +8,5 @@ const Bar = db.define("bar", {
   email: { type: sequelize.STRING },
   description: { type: sequelize.TEXT },
 });
-
-Bar.associate = (models) => {
-  Bar.hasMany(models.Biere, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
-  Bar.hasMany(models.Commande, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
-};
 
 module.exports = Bar;

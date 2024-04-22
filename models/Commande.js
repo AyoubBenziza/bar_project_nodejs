@@ -1,7 +1,5 @@
 // Imports
 const sequelize = require("sequelize");
-const Bar = require("./Bar");
-const Biere = require("./Biere");
 const db = require("../config/database");
 
 // Model
@@ -19,18 +17,5 @@ const Commande = db.define("commande", {
     validate: { isIn: [["in progress", "finished"]] },
   },
 });
-
-// Associations
-Commande.associate = (models) => {
-  Commande.belongsTo(models.Bar);
-  Commande.belongsToMany(
-    models.Biere,
-    { through: "BiereCommande" },
-    {
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
-    }
-  );
-};
 
 module.exports = Commande;
