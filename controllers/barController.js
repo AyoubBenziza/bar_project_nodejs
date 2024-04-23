@@ -1,6 +1,6 @@
 const Bar = require("../models/Bar.js");
-const Bierre = require("../models/Biere.js");
 const Commande = require("../models/Commande.js");
+const { Op } = require("sequelize");
 
 // Récupère tous les bars
 const getBars = (req, res) => {
@@ -68,7 +68,6 @@ const getAllBeersFromBar = async (req, res) => {
 };
 
 // Ajoute une commande dans un bar
-
 const addCommandeIntoBar = async (req, res) => {
   const commande = Commande.create({
     name: req.body.name,
@@ -88,6 +87,25 @@ const addCommandeIntoBar = async (req, res) => {
     });
 };
 
+// Recherche toutes les commandes à une date donné
+const getCommandeOnDate = (req, res) => {
+  const dateChoice = req.query.date;
+
+  Commande.findAll({ where: { date: dateChoice } }).then((com) =>
+    res.json(com)
+  );
+};
+
+// Recherche toutes les commandes entre un prix mini et max
+const getCommandeBetweenPrice = (req, res) => {
+  const prix_min = req.query.prix_min;
+  const prix_max = req.quey.prix_max;
+
+  Commande.findAll({ where: { prix: $between[(prix_min, prix_max)] } }).then(
+    (com) => res.json(com)
+  );
+};
+
 module.exports = {
   getBars,
   getBarProfil,
@@ -96,4 +114,6 @@ module.exports = {
   getAllBeersFromBar,
   editbar,
   addCommandeIntoBar,
+  getCommandeOnDate,
+  getCommandeBetweenPrice,
 };
