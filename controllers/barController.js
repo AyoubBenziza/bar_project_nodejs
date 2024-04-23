@@ -74,7 +74,7 @@ const addCommandeIntoBar = async (req, res) => {
     name: req.body.name,
     price: req.body.price,
     date: new Date(Date.now()),
-    status: "in progress",
+    status: "en cours",
   });
 
   const bar = await Bar.findByPk(req.params.barId);
