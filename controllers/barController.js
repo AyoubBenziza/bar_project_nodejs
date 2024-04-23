@@ -1,6 +1,7 @@
 const Bar = require("../models/Bar.js");
-const Bierre = require("../models/Biere.js");
+const Biere = require("../models/Biere.js");
 const Commande = require("../models/Commande.js");
+const { Sequelize } = require("sequelize");
 
 // Récupère tous les bars
 const getBars = (req, res) => {
@@ -74,7 +75,7 @@ const addCommandeIntoBar = async (req, res) => {
     name: req.body.name,
     price: req.body.price,
     date: new Date(Date.now()),
-    status: "en cours",
+    status: "in progress",
   });
 
   const bar = await Bar.findByPk(req.params.barId);
@@ -88,6 +89,20 @@ const addCommandeIntoBar = async (req, res) => {
     });
 };
 
+//Obtient le degré d'alcool moyen des bières d'un bars
+const averageDegreeFromBar = async (req, res) => {
+  Biere.findAll({
+    attributes: [[Sequelize.fn("AVG", Sequelize.col("degree")), "avDegree"]],
+    where: { barId: req.params.barId },
+  })
+    .then((avgDegree) => {
+      res.json(avgDegree);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
 module.exports = {
   getBars,
   getBarProfil,
@@ -96,4 +111,5 @@ module.exports = {
   getAllBeersFromBar,
   editbar,
   addCommandeIntoBar,
+  averageDegreeFromBar,
 };
