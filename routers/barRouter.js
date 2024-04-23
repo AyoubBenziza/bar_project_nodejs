@@ -6,6 +6,8 @@ const {
   getAllBeersFromBar,
   editbar,
   addCommandeIntoBar,
+  averageDegreeFromBar,
+  getCommande,
 } = require("../controllers/barController");
 
 const {
@@ -39,5 +41,12 @@ router.put("/:barId", validateBarBody, validateIdBar, validate, editbar);
 
 // Suprimer un bar
 router.delete("/:barId", validateIdBar, validate, deleteBar);
+
+//Obtenir le degré d'alcool moyen des bières d'un bars
+router.get("/:barId/degree", validateIdBar, validate, averageDegreeFromBar);
+// Récupère la liste des commande à une date donné
+router.get("/:barId/commande", validateIdBar, validate, getCommande);
+
+// Récupère la liste des commande à une date donné
 
 module.exports = router;

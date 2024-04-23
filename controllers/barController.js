@@ -62,7 +62,6 @@ const deleteBar = (req, res) => {
 
 // Récupère toutes les bières d'un bar
 const getAllBeersFromBar = async (req, res) => {
-  console.log(`test`);
   const bar = await Bar.findByPk(req.params.barId);
 
   bar
@@ -76,13 +75,12 @@ const getAllBeersFromBar = async (req, res) => {
 };
 
 // Ajoute une commande dans un bar
-
 const addCommandeIntoBar = async (req, res) => {
   const commande = Commande.create({
     name: req.body.name,
     price: req.body.price,
-    date: new Date(Date.now()),
-    status: "en cours",
+    date: new Date(),
+    status: "in progress",
   });
 
   const bar = await Bar.findByPk(req.params.barId);
@@ -96,6 +94,39 @@ const addCommandeIntoBar = async (req, res) => {
     });
 };
 
+//Obtient le degré d'alcool moyen des bières d'un bars
+const averageDegreeFromBar = async (req, res) => {
+  Biere.findAll({
+    attributes: [[fn("AVG", col("degree")), "avDegree"]],
+    where: { barId: req.params.barId },
+  })
+    .then((avgDegree) => {
+      res.json(avgDegree);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+const getCommande = (req, res) => {
+  // Recherche toutes les commandes à une date donné
+  const dateChoice = req.query.date;
+
+  // Recherche toutes les commandes entre un prix mini et max
+  const prix_min = req.query.prix_min;
+  const prix_max = req.query.prix_max;
+
+  Commande.findAll({
+    where: {
+      [Op.or]: {
+        price: {
+          [Op.between]: [prix_min, prix_max],
+        },
+        date: new Date(dateChoice),
+      },
+    },
+  }).then((com) => res.json(com));
+};
+
 module.exports = {
   getBars,
   getBarProfil,
@@ -105,4 +136,5 @@ module.exports = {
   editbar,
   addCommandeIntoBar,
   averageDegreeFromBar,
+  getCommande,
 };
