@@ -1,10 +1,18 @@
 const Bar = require("../models/Bar.js");
-const Bierre = require("../models/Biere.js");
+const Biere = require("../models/Biere.js");
 const Commande = require("../models/Commande.js");
+const { Op, fn, col } = require("sequelize");
 
 // Récupère tous les bars
 const getBars = (req, res) => {
-  Bar.findAll().then((bar) => res.json(bar));
+  Bar.findAll({
+    where: {
+      [Op.or]: {
+        adresse: { [Op.endsWith]: req.query.ville },
+        name: { [Op.substring]: req.query.name },
+      },
+    },
+  }).then((bar) => res.json(bar));
 };
 
 // Récupère les caractréristique d'un bar en prenant son id en paramètre
@@ -96,4 +104,5 @@ module.exports = {
   getAllBeersFromBar,
   editbar,
   addCommandeIntoBar,
+  averageDegreeFromBar,
 };
