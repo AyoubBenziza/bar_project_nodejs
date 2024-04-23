@@ -6,8 +6,7 @@ const {
   getAllBeersFromBar,
   editbar,
   addCommandeIntoBar,
-  getCommandeOnDate,
-  getCommandeBetweenPrice,
+  getCommande,
 } = require("../controllers/barController");
 
 const {
@@ -43,14 +42,8 @@ router.put("/:barId", validateBarBody, validateIdBar, validate, editbar);
 router.delete("/:barId", validateIdBar, validate, deleteBar);
 
 // Récupère la liste des commande à une date donné
-router.get("/:barId/commande?date", validateIdBar, validate, getCommandeOnDate);
+router.get("/:barId/commande", validateIdBar, validate, getCommande);
 
 // Récupère la liste des commande à une date donné
-router.get(
-  "/:barId/commande?prix_min&prix_max",
-  validateIdBar,
-  validate,
-  getCommandeBetweenPrice
-);
 
 module.exports = router;
