@@ -19,7 +19,6 @@ const validateCommandBody = [
     .notEmpty()
     .isFloat({ min: 0 })
     .withMessage("price must be a number over 0"),
-  body("barId").notEmpty().isNumeric().withMessage("barId must be a numeric"),
   body("date").notEmpty().isDate().withMessage("date must be a date"),
   body("status")
     .trim()

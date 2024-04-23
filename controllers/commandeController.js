@@ -35,8 +35,7 @@ const addBeer = async (req, res) => {
 
 // Modification d'une commande
 const updateCommand = (req, res) => {
-  const command = req.body;
-  Commande.update(command, { where: { id: req.params.idCommand } })
+  Commande.update(req.body, { where: { id: req.params.idCommand } })
     .then((command) => res.json(command))
     .catch((err) => res.send(err.message));
 };
