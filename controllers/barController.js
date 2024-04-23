@@ -55,7 +55,6 @@ const deleteBar = (req, res) => {
 
 // Récupère toutes les bières d'un bar
 const getAllBeersFromBar = async (req, res) => {
-  console.log(`test`);
   const bar = await Bar.findByPk(req.params.barId);
 
   bar
@@ -69,12 +68,11 @@ const getAllBeersFromBar = async (req, res) => {
 };
 
 // Ajoute une commande dans un bar
-
 const addCommandeIntoBar = async (req, res) => {
   const commande = Commande.create({
     name: req.body.name,
     price: req.body.price,
-    date: new Date(Date.now()),
+    date: new Date(),
     status: "in progress",
   });
 
@@ -102,6 +100,25 @@ const averageDegreeFromBar = async (req, res) => {
       res.send(err);
     });
 };
+const getCommande = (req, res) => {
+  // Recherche toutes les commandes à une date donné
+  const dateChoice = req.query.date;
+
+  // Recherche toutes les commandes entre un prix mini et max
+  const prix_min = req.query.prix_min;
+  const prix_max = req.query.prix_max;
+
+  Commande.findAll({
+    where: {
+      [Op.or]: {
+        price: {
+          [Op.between]: [prix_min, prix_max],
+        },
+        date: new Date(dateChoice),
+      },
+    },
+  }).then((com) => res.json(com));
+};
 
 module.exports = {
   getBars,
@@ -112,4 +129,5 @@ module.exports = {
   editbar,
   addCommandeIntoBar,
   averageDegreeFromBar,
+  getCommande,
 };
