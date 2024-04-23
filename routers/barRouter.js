@@ -32,13 +32,7 @@ router.get("/:barId/biere", validateIdBar, validate, getAllBeersFromBar);
 router.post("/", validateBarBody, addBar);
 
 // Ajoute une commande au bar
-router.post(
-  "/:barId/commande",
-  validateIdBar,
-  validateCommandBody,
-  validate,
-  addCommandeIntoBar
-);
+router.post("/:barId/commande", validateIdBar, validate, addCommandeIntoBar);
 
 // Modifier un bar
 router.put("/:barId", validateBarBody, validateIdBar, validate, editbar);

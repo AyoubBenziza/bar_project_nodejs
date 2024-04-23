@@ -13,20 +13,25 @@ const getBarProfil = (req, res) => {
 };
 
 // Crée un bar
-const addBar = (req, res) => {
-  const bar = {
-    name: req.body.name,
-    description: req.body.description,
-    tel: req.body.tel,
-    email: req.body.email,
-    adresse: req.body.adresse,
-  };
-
-  Bar.create(bar).then((queryResult) => res.json(queryResult));
+const addBar = async (req, res) => {
+  const [bar, created] = await Bar.findOrCreate({
+    where: { name: req.body.name.trim() },
+    defaults: {
+      description: req.body.description,
+      tel: req.body.tel,
+      email: req.body.email,
+      adresse: req.body.adresse,
+    },
+  });
+  if (created) {
+    res.send("Le bar est créé");
+  } else {
+    res.send("Le nom est déja utilisé");
+  }
 };
 
 // Modifie un bar en prenant en paramètre son id
-const editbar = (req, res) => {
+const editbar = async (req, res) => {
   const bar = {
     name: req.body.name,
     description: req.body.description,
@@ -49,6 +54,7 @@ const deleteBar = (req, res) => {
 
 // Récupère toutes les bières d'un bar
 const getAllBeersFromBar = async (req, res) => {
+  console.log(`test`);
   const bar = await Bar.findByPk(req.params.barId);
 
   bar
@@ -62,22 +68,23 @@ const getAllBeersFromBar = async (req, res) => {
 };
 
 // Ajoute une commande dans un bar
-const addCommandeIntoBar = (req, res) => {
-  console.log(`test`);
-  const commande = {
+
+const addCommandeIntoBar = async (req, res) => {
+  const commande = Commande.create({
     name: req.body.name,
     price: req.body.price,
-    date: req.body.date,
+    date: new Date(Date.now()),
     status: "in progress",
-    barId: req.params.barId,
-    //le contenu du body + le bar id en champ "barId"
-  };
-  Commande.create(commande)
-    .then((commande) => {
-      res.send(commande);
+  });
+
+  const bar = await Bar.findByPk(req.params.barId);
+  bar
+    .addCommande(commande, { include: Commande })
+    .then((com) => {
+      res.json(com);
     })
     .catch((err) => {
-      res.send(err);
+      res.send(err.message);
     });
 };
 
