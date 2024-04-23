@@ -1,5 +1,7 @@
+// Imports
 const { param, body } = require("express-validator");
 
+// Validators
 const validateCommandId = [
   param("idCommand")
     .notEmpty()
@@ -24,8 +26,9 @@ const validateCommandBody = [
     .notEmpty()
     .isString()
     .withMessage("status must be a string")
-    .isIn(["in progress", "finished"])
+    .isIn(["en cours", "terminée"])
     .withMessage("Status does contain invalid value"),
 ];
 
+// Exports
 module.exports = { validateCommandId, validateCommandBody };
