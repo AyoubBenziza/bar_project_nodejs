@@ -14,7 +14,7 @@ const Commande = db.define("Commande", {
   date: { type: sequelize.DATE },
   status: {
     type: sequelize.STRING,
-    validate: { isIn: [["in progress", "finished"]] },
+    validate: { isIn: [["en cours", "terminée"]] },
   },
 });
 
