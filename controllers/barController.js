@@ -5,14 +5,18 @@ const { Op, fn, col } = require("sequelize");
 
 // Récupère tous les bars
 const getBars = (req, res) => {
-  Bar.findAll({
-    where: {
-      [Op.or]: {
-        adresse: { [Op.endsWith]: req.query.ville },
-        name: { [Op.substring]: req.query.name },
+  if (req.query === null) {
+    Bar.findAll({
+      where: {
+        [Op.or]: {
+          adresse: { [Op.endsWith]: req.query.ville },
+          name: { [Op.substring]: req.query.name },
+        },
       },
-    },
-  }).then((bar) => res.json(bar));
+    }).then((bar) => res.json(bar));
+  } else {
+    Bar.findAll().then((bar) => res.json(bar));
+  }
 };
 
 // Récupère les caractréristique d'un bar en prenant son id en paramètre
@@ -96,16 +100,38 @@ const addCommandeIntoBar = async (req, res) => {
 
 //Obtient le degré d'alcool moyen des bières d'un bars
 const averageDegreeFromBar = async (req, res) => {
-  Biere.findAll({
-    attributes: [[fn("AVG", col("degree")), "avDegree"]],
-    where: { barId: req.params.barId },
-  })
-    .then((avgDegree) => {
-      res.json(avgDegree);
+  const { prix_min, prix_max } = req.query;
+
+  if (prix_min && prix_max) {
+    Biere.findAll({
+      where: {
+        barId: req.params.barId,
+        price: {
+          [Op.between]: [prix_min, prix_max],
+        },
+      },
+      attributes: [[fn("AVG", col("degree")), "avDegree"]],
     })
-    .catch((err) => {
-      res.send(err);
-    });
+      .then((avgDegree) => {
+        res.json(avgDegree);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  } else {
+    Biere.findAll({
+      where: {
+        barId: req.params.barId,
+      },
+      attributes: [[fn("AVG", col("degree")), "avDegree"]],
+    })
+      .then((avgDegree) => {
+        res.json(avgDegree);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  }
 };
 const getCommande = (req, res) => {
   // Recherche toutes les commandes à une date donné
