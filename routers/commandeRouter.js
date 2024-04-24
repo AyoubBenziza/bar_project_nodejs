@@ -6,6 +6,7 @@ const {
   deleteCommand,
   addBeer,
   deleteBeer,
+  getDetailsPDF,
 } = require("../controllers/commandeController");
 const router = express.Router();
 
@@ -43,6 +44,9 @@ router.delete(
   validate,
   deleteBeer
 );
+
+// PDF File
+router.get("/details/:idCommand", validateCommandId, validate, getDetailsPDF);
 
 // Exports
 module.exports = router;

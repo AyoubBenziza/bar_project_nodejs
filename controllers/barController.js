@@ -84,7 +84,7 @@ const addCommandeIntoBar = async (req, res) => {
     name: req.body.name,
     price: req.body.price,
     date: new Date(),
-    status: "in progress",
+    status: "en cours",
   });
 
   const bar = await Bar.findByPk(req.params.barId);
@@ -100,38 +100,27 @@ const addCommandeIntoBar = async (req, res) => {
 
 //Obtient le degré d'alcool moyen des bières d'un bars
 const averageDegreeFromBar = async (req, res) => {
-  const { prix_min, prix_max } = req.query;
+  const { date, prix_min, prix_max } = req.query;
+  const where = { barId: req.params.barId };
+  const include = { model: Commande };
 
   if (prix_min && prix_max) {
-    Biere.findAll({
-      where: {
-        barId: req.params.barId,
-        price: {
-          [Op.between]: [prix_min, prix_max],
-        },
-      },
-      attributes: [[fn("AVG", col("degree")), "avDegree"]],
-    })
-      .then((avgDegree) => {
-        res.json(avgDegree);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
-  } else {
-    Biere.findAll({
-      where: {
-        barId: req.params.barId,
-      },
-      attributes: [[fn("AVG", col("degree")), "avDegree"]],
-    })
-      .then((avgDegree) => {
-        res.json(avgDegree);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
+    where.price = { [Op.between]: [prix_min, prix_max] };
   }
+  if (date) {
+    include.where = { date: new Date(date) };
+  }
+  Biere.findAll({
+    where,
+    include,
+    attributes: [[fn("AVG", col("degree")), "avDegree"]],
+  })
+    .then((avgDegree) => {
+      res.json(avgDegree);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 };
 const getCommande = (req, res) => {
   // Recherche toutes les commandes à une date donné

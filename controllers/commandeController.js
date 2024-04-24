@@ -1,4 +1,6 @@
 // Imports
+const fs = require("fs");
+const PDFDocument = require("pdfkit");
 const Commande = require("../models/Commande");
 const Biere = require("../models/Biere");
 
@@ -11,6 +13,28 @@ const getCommand = (req, res) => {
       res.json(command);
     })
     .catch((err) => res.send(err));
+};
+
+const getDetailsPDF = (req, res) => {
+  Commande.findByPk(req.params.idCommand).then((commande) => {
+    const document = new PDFDocument({ bufferPages: true });
+
+    let buffers = [];
+    document.on("data", buffers.push.bind(buffers));
+    document.on("end", () => {
+      let pdfData = Buffer.concat(buffers);
+      res
+        .writeHead(200, {
+          "Content-Length": Buffer.byteLength(pdfData),
+          "Content-Type": "application/pdf",
+          "Content-disposition": `attachment;filename=Commande${commande.id}.pdf`,
+        })
+        .end(pdfData);
+    });
+
+    document.font("Times-Roman").fontSize(12).text(JSON.stringify(commande));
+    document.end();
+  });
 };
 
 //------------------POST---------------//
@@ -70,4 +94,5 @@ module.exports = {
   deleteCommand,
   addBeer,
   deleteBeer,
+  getDetailsPDF,
 };
