@@ -68,10 +68,13 @@ const deleteBar = (req, res) => {
 const getAllBeersFromBar = async (req, res) => {
   const bar = await Bar.findByPk(req.params.barId);
   const order = req.query.sort;
+  const limit = req.query.limit;
+  const offset = req.query.offset;
 
   bar
     .getBieres({
-      limit: 10,
+      limit: limit,
+      offset: offset,
       order: [["name", order]],
     })
     .then((biere) => {
