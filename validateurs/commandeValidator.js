@@ -19,14 +19,19 @@ const validateCommandBody = [
     .notEmpty()
     .isFloat({ min: 0 })
     .withMessage("price must be a number over 0"),
-  body("date").notEmpty().isDate().withMessage("date must be a date"),
+  body("date")
+    .notEmpty()
+    .isDate()
+    .withMessage("date must be a date")
+    .optional(),
   body("status")
     .trim()
     .notEmpty()
     .isString()
     .withMessage("status must be a string")
     .isIn(["en cours", "terminée"])
-    .withMessage("Status does contain invalid value"),
+    .withMessage("Status does contain invalid value")
+    .optional(),
 ];
 
 // Exports

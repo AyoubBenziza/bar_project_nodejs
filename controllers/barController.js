@@ -67,9 +67,24 @@ const deleteBar = (req, res) => {
 // Récupère toutes les bières d'un bar
 const getAllBeersFromBar = async (req, res) => {
   const bar = await Bar.findByPk(req.params.barId);
+  const order = req.query.sort;
+  const limit = req.query.limit;
+  const offset = req.query.offset;
+  const degree_min = req.query.degree_min;
+  const degree_max = req.query.degree_max;
+  console.log(`degree min : ${degree_min} et degree max : ${degree_max}`);
 
   bar
-    .getBieres()
+    .getBieres({
+      where: {
+        degree: {
+          [Op.between]: [degree_min, degree_max],
+        },
+      },
+      limit: limit,
+      offset: offset,
+      order: [["name", order]],
+    })
     .then((biere) => {
       res.json(biere);
     })
@@ -80,11 +95,13 @@ const getAllBeersFromBar = async (req, res) => {
 
 // Ajoute une commande dans un bar
 const addCommandeIntoBar = async (req, res) => {
+  console.log(`test`);
   const commande = Commande.create({
     name: req.body.name,
     price: req.body.price,
     date: new Date(),
     status: "en cours",
+    BarId: req.params.barId,
   });
 
   const bar = await Bar.findByPk(req.params.barId);
@@ -122,23 +139,36 @@ const averageDegreeFromBar = async (req, res) => {
       res.send(err);
     });
 };
-const getCommande = (req, res) => {
-  // Recherche toutes les commandes à une date donné
-  const dateChoice = req.query.date;
+const getFilterCommand = (req, res) => {
+  const { date, prix_min, prix_max, status, name } = req.query;
+  const contentWhere = {};
 
-  // Recherche toutes les commandes entre un prix mini et max
-  const prix_min = req.query.prix_min;
-  const prix_max = req.query.prix_max;
+  if (status) {
+    contentWhere.status = status;
+  }
+
+  if (name) {
+    contentWhere.name = {
+      [Op.like]: `%${name}%`,
+    };
+  }
+
+  if (date && prix_min && prix_max) {
+    contentWhere.price = {
+      [Op.between]: [prix_min, prix_max],
+    };
+    contentWhere.date = new Date(date);
+  } else {
+    contentWhere[Op.or] = {
+      price: {
+        [Op.between]: [prix_min, prix_max],
+      },
+      date: new Date(date),
+    };
+  }
 
   Commande.findAll({
-    where: {
-      [Op.or]: {
-        price: {
-          [Op.between]: [prix_min, prix_max],
-        },
-        date: new Date(dateChoice),
-      },
-    },
+    where: contentWhere,
   }).then((com) => res.json(com));
 };
 
@@ -151,5 +181,5 @@ module.exports = {
   editbar,
   addCommandeIntoBar,
   averageDegreeFromBar,
-  getCommande,
+  getFilterCommand,
 };
