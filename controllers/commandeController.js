@@ -1,6 +1,7 @@
 // Imports
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
+const { createPDF } = require("../utils/pdfService");
 const Commande = require("../models/Commande");
 const Biere = require("../models/Biere");
 
@@ -17,23 +18,19 @@ const getCommand = (req, res) => {
 
 const getDetailsPDF = (req, res) => {
   Commande.findByPk(req.params.idCommand).then((commande) => {
-    const document = new PDFDocument({ bufferPages: true });
-
-    let buffers = [];
-    document.on("data", buffers.push.bind(buffers));
-    document.on("end", () => {
-      let pdfData = Buffer.concat(buffers);
-      res
-        .writeHead(200, {
-          "Content-Length": Buffer.byteLength(pdfData),
-          "Content-Type": "application/pdf",
-          "Content-disposition": `attachment;filename=Commande${commande.id}.pdf`,
-        })
-        .end(pdfData);
+    const stream = res.writeHead(200, {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment;filename=Commande${commande.id}.pdf`,
     });
-
-    document.font("Times-Roman").fontSize(12).text(JSON.stringify(commande));
-    document.end();
+    const values = commande.dataValues;
+    values.createdAt = values.createdAt.toLocaleString("fr-FR");
+    values.updatedAt = values.updatedAt.toLocaleString("fr-FR");
+    createPDF(
+      (chunk) => stream.write(chunk),
+      () => stream.end(),
+      values
+    );
+    // res.send("Fichier PDF créé");
   });
 };
 

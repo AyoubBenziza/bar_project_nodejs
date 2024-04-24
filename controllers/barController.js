@@ -1,5 +1,4 @@
 const Bar = require("../models/Bar.js");
-const Biere = require("../models/Biere.js");
 const Commande = require("../models/Commande.js");
 const { Op, fn, col } = require("sequelize");
 
