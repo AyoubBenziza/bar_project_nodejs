@@ -5,18 +5,21 @@ const { Op, fn, col } = require("sequelize");
 
 // Récupère tous les bars
 const getBars = (req, res) => {
-  if (req.query === null) {
-    Bar.findAll({
-      where: {
-        [Op.or]: {
-          adresse: { [Op.endsWith]: req.query.ville },
-          name: { [Op.substring]: req.query.name },
-        },
-      },
-    }).then((bar) => res.json(bar));
-  } else {
-    Bar.findAll().then((bar) => res.json(bar));
+  const { ville, name } = req.query;
+  const where = {};
+
+  // Vérifier les prérequis
+  if (ville) {
+    where.adresse = { [Op.endsWith]: req.query.ville };
   }
+  if (name) {
+    where.name = { [Op.substring]: req.query.name };
+  }
+
+  // Requête
+  Bar.findAll({
+    where,
+  }).then((bar) => res.json(bar));
 };
 
 // Récupère les caractréristique d'un bar en prenant son id en paramètre
@@ -122,8 +125,10 @@ const addCommandeIntoBar = async (req, res) => {
 //Obtient le degré d'alcool moyen des bières d'un bars
 const averageDegreeFromBar = async (req, res) => {
   const { date, prix_min, prix_max } = req.query;
-  const where = { barId: req.params.barId };
+  const where = {};
   const include = { model: Commande };
+
+  const bar = await Bar.findByPk(req.params.barId);
 
   if (prix_min && prix_max) {
     where.price = { [Op.between]: [prix_min, prix_max] };
@@ -131,11 +136,12 @@ const averageDegreeFromBar = async (req, res) => {
   if (date) {
     include.where = { date: new Date(date) };
   }
-  Biere.findAll({
-    where,
-    include,
-    attributes: [[fn("AVG", col("degree")), "avDegree"]],
-  })
+  bar
+    .getBieres({
+      where,
+      include,
+      attributes: [[fn("AVG", col("degree")), "avDegree"]],
+    })
     .then((avgDegree) => {
       res.json(avgDegree);
     })
