@@ -144,38 +144,35 @@ const averageDegreeFromBar = async (req, res) => {
 };
 const getFilterCommand = (req, res) => {
   const { date, prix_min, prix_max, status, name } = req.query;
+  const contentWhere = {};
+
+  if (status) {
+    contentWhere.status = status;
+  }
+
+  if (name) {
+    contentWhere.name = {
+      [Op.like]: `%${name}%`,
+    };
+  }
 
   if (date && prix_min && prix_max) {
-    Commande.findAll({
-      where: {
-        [Op.and]: {
-          price: {
-            [Op.between]: [prix_min, prix_max],
-          },
-          date: new Date(date),
-          status: status,
-          name: {
-            [Op.like]: `%${name}%`,
-          },
-        },
-      },
-    }).then((com) => res.json(com));
+    contentWhere.price = {
+      [Op.between]: [prix_min, prix_max],
+    };
+    contentWhere.date = new Date(date);
   } else {
-    Commande.findAll({
-      where: {
-        [Op.or]: {
-          price: {
-            [Op.between]: [prix_min, prix_max],
-          },
-          date: new Date(date),
-          status: status,
-          name: {
-            [Op.like]: `%${name}%`,
-          },
-        },
+    contentWhere[Op.or] = {
+      price: {
+        [Op.between]: [prix_min, prix_max],
       },
-    }).then((com) => res.json(com));
+      date: new Date(date),
+    };
   }
+
+  Commande.findAll({
+    where: contentWhere,
+  }).then((com) => res.json(com));
 };
 
 module.exports = {
