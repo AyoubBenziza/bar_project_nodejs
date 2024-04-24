@@ -1,28 +1,42 @@
+// Imports
 const PDFDocument = require("pdfkit");
 
 // Générateur de fichier PDF
-function createPDF(dataCallback, endCallback, data) {
+const createCommandePDF = (dataCallback, endCallback, data) => {
   const commande = data;
   const doc = new PDFDocument();
   doc.on("data", dataCallback);
   doc.on("end", endCallback);
 
-  // Variable de position y(vertical) dans le fichier
-  let y = 65;
-
-  // HR
-  doc.strokeColor("#aaaaaa").lineWidth(1).moveTo(50, y).lineTo(550, y).stroke();
-
   // Ecriture des données
-  for (let property in commande) {
-    doc.fontSize(18).text(`${property}: ${commande[property]}`);
-    y += 22;
-  }
 
-  doc.strokeColor("#aaaaaa").lineWidth(1).moveTo(50, y).lineTo(550, y).stroke();
+  // Commande
+  doc.fontSize(25).text(`Commande ${commande.name}`);
+  doc.moveDown();
+  doc.fontSize(16).text(`Id: ${commande.id}`);
+  doc.fontSize(16).text(`Price: ${commande.price}€`);
+  doc.fontSize(16).text(`Date: ${commande.date}`);
+  doc.fontSize(16).text(`Créé le: ${commande.createdAt}`);
+  doc.fontSize(16).text(`Modifié le: ${commande.updatedAt}`);
+  doc.fontSize(16).text(`BarId: ${commande.BarId}`);
+  doc.moveDown();
+
+  // Liste des bières
+  doc.fontSize(25).text("Liste des bières");
+  console.log(`Bieres`, commande.Bieres);
+  for (const element of commande.Bieres) {
+    doc.moveDown();
+    doc.fontSize(22).text(element.name);
+    doc.moveDown();
+    doc.fontSize(16).text(`Id: ${element.id}`);
+    doc.fontSize(16).text(`Degree: ${element.degree}`);
+    doc.fontSize(16).text(`Price: ${element.price}€`);
+    doc.fontSize(16).text(`BarId: ${element.BarId}`);
+  }
 
   // Fin d'écriture du fichier
   doc.end();
-}
+};
 
-module.exports = { createPDF };
+// Exports
+module.exports = { createCommandePDF };

@@ -1,9 +1,8 @@
 // Imports
-const fs = require("fs");
-const PDFDocument = require("pdfkit");
-const { createPDF } = require("../utils/pdfService");
 const Commande = require("../models/Commande");
 const Biere = require("../models/Biere");
+const Bar = require("../models/Bar");
+const { createCommandePDF } = require("../utils/pdfService");
 
 //------------------GET-----------------//
 
@@ -13,25 +12,38 @@ const getCommand = (req, res) => {
     .then((command) => {
       res.json(command);
     })
-    .catch((err) => res.send(err));
+    .catch((err) => res.send(err.message));
 };
 
+// Obtenir un fichier PDF des détails d'une commande
 const getDetailsPDF = (req, res) => {
-  Commande.findByPk(req.params.idCommand).then((commande) => {
-    const stream = res.writeHead(200, {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment;filename=Commande${commande.id}.pdf`,
-    });
-    const values = commande.dataValues;
-    values.createdAt = values.createdAt.toLocaleString("fr-FR");
-    values.updatedAt = values.updatedAt.toLocaleString("fr-FR");
-    createPDF(
-      (chunk) => stream.write(chunk),
-      () => stream.end(),
-      values
-    );
-    // res.send("Fichier PDF créé");
-  });
+  Commande.findByPk(req.params.idCommand, { include: Biere })
+    .then((result) => {
+      const stream = res.writeHead(200, {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment;filename=Commande${result.id}.pdf`,
+      });
+
+      const commande = result.dataValues;
+      commande.createdAt = commande.createdAt.toLocaleString("fr-FR");
+      commande.updatedAt = commande.updatedAt.toLocaleString("fr-FR");
+      commande.Bieres = commande.Bieres.map((element) => {
+        return {
+          id: element.dataValues.id,
+          name: element.dataValues.name,
+          degree: element.dataValues.degree,
+          price: element.dataValues.price,
+          BarId: element.dataValues.BarId,
+        };
+      });
+
+      createCommandePDF(
+        (chunk) => stream.write(chunk),
+        () => stream.end(),
+        commande
+      );
+    })
+    .catch((err) => res.send(err.message));
 };
 
 //------------------POST---------------//
