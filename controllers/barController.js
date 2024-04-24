@@ -67,9 +67,12 @@ const deleteBar = (req, res) => {
 // Récupère toutes les bières d'un bar
 const getAllBeersFromBar = async (req, res) => {
   const bar = await Bar.findByPk(req.params.barId);
+  const order = req.query.sort;
 
   bar
-    .getBieres()
+    .getBieres({
+      order: [["name", order]],
+    })
     .then((biere) => {
       res.json(biere);
     })
