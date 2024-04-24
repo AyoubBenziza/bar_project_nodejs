@@ -66,13 +66,8 @@ const deleteBar = (req, res) => {
 
 // Récupère toutes les bières d'un bar
 const getAllBeersFromBar = async (req, res) => {
-  const {
-    degree_min,
-    degree_max,
-    /* prix_min, prix_max, */ offset,
-    limit,
-    sort,
-  } = req.query;
+  const { degree_min, degree_max, prix_min, prix_max, offset, limit, sort } =
+    req.query;
   console.log(`order : ${sort}`);
   const where = {};
   const options = {
@@ -82,6 +77,9 @@ const getAllBeersFromBar = async (req, res) => {
   };
   if (degree_min && degree_max) {
     where.degree = { [Op.between]: [degree_min, degree_max] };
+  }
+  if (prix_min && prix_max) {
+    where.price = { [Op.between]: [prix_min, prix_max] };
   }
   if (sort) {
     options.order = [["name", sort]];
