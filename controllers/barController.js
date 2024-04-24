@@ -70,9 +70,17 @@ const getAllBeersFromBar = async (req, res) => {
   const order = req.query.sort;
   const limit = req.query.limit;
   const offset = req.query.offset;
+  const degree_min = req.query.degree_min;
+  const degree_max = req.query.degree_max;
+  console.log(`degree min : ${degree_min} et degree max : ${degree_max}`);
 
   bar
     .getBieres({
+      where: {
+        degree: {
+          [Op.between]: [degree_min, degree_max],
+        },
+      },
       limit: limit,
       offset: offset,
       order: [["name", order]],
