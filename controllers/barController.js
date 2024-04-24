@@ -71,6 +71,7 @@ const getAllBeersFromBar = async (req, res) => {
 
   bar
     .getBieres({
+      limit: 10,
       order: [["name", order]],
     })
     .then((biere) => {
