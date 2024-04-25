@@ -1,16 +1,14 @@
 const { describe, expect, test } = require("@jest/globals");
 const request = require("supertest");
 const { app } = require("../app.js");
-const axios = require("axios");
 const commandeUrl = "/commande";
 
 describe("Tests des Requêtes Commande", () => {
   // Fetch Requests
 
   //----------------------------GET---------------------------//
-  test("getCommand", async () => {
-    const response = await request(app).get(`${commandeUrl}/1`);
-    expect(response.statusCode).toBe(200);
+  test("getCommand", () => {
+    return request(app).get(`${commandeUrl}/1`).expect(200);
   });
 
   // //----------------------------POST---------------------------//
