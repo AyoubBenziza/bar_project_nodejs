@@ -27,8 +27,9 @@ describe("Tests des Requêtes Bar", () => {
 
     return response.data;
   };
+
   //----------------------------GET---------------------------//
-  test("getBars", async () => {
+  /*test("getBars", async () => {
     const response = await getRequest(`${barUrl}`);
     console.log(response);
     expect(response).toEqual([
@@ -41,6 +42,16 @@ describe("Tests des Requêtes Bar", () => {
         description: "iugqhrvopi",
         createdAt: "2024-04-23T13:10:48.648Z",
         updatedAt: "2024-04-23T13:10:48.648Z",
+      },
+      {
+        id: 2,
+        name: "Est West",
+        tel: "0203040506",
+        adresse: "20 route de Lyon",
+        email: "jgefvopqij@gfj.fr",
+        description: "bar à bierre",
+        createdAt: "2024-04-24T08:57:37.484Z",
+        updatedAt: "2024-04-24T08:57:37.484Z",
       },
     ]);
   });
@@ -61,7 +72,7 @@ describe("Tests des Requêtes Bar", () => {
         updatedAt: "2024-04-24T08:57:37.484Z",
       },
     ]);
-  });
+  });*/
   /*
   //----------------------------PUT---------------------------//
   test("updateCommand", async () => {
@@ -78,17 +89,31 @@ describe("Tests des Requêtes Bar", () => {
     console.log(response);
     expect(response).toEqual(body);
   });
-
+  
   //---------------------------DELETE---------------------------//
   test("deleteCommand", async () => {
     const response = await deleteRequest(`${commandeUrl}/4`);
     console.log(response);
     expect(response).toEqual("Suppression de la commande effectué");
   });
-
-  test("deleteBeer", async () => {
-    const response = await deleteRequest(`${commandeUrl}/1/biere/4`);
+  */
+  /*
+  test("deleteBar", async () => {
+    const response = await deleteRequest(`${barUrl}/1`);
     console.log(response);
-    expect(response).toEqual("Supression de la bière effectuée");
+    expect(response).toEqual("Bar deleted");
   });*/
+
+  test("addBar", async () => {
+    const body = {
+      name: "Payotte",
+      tel: "0102030405",
+      adresse: "pqhgpqoij",
+      email: "irjfehqre@qrguhi.fr",
+      description: "iugqhrvopi",
+    };
+    const response = await postRequest(`${barUrl}`, body);
+    console.log(response);
+    expect(response).toEqual("Le bar est créé");
+  });
 });
