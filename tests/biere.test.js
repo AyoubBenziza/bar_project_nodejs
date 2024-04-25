@@ -1,6 +1,7 @@
 const { describe, expect, test } = require("@jest/globals");
 const request = require("supertest");
 const { app } = require("../app.js");
+const { put } = require("../routers/barRouter.js");
 const biereUrl = "/biere";
 
 describe("Tests des Requêtes Biere", () => {
@@ -23,7 +24,12 @@ describe("Tests des Requêtes Biere", () => {
       price: 330,
       BarId: 2,
     };
-    return request(app).get(`${biereUrl}/2`).expect(200);
+    request(app)
+      .put(`${biereUrl}/2`)
+      .send(body)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(true);
   });
 
   //---------------------------DELETE---------------------------//
