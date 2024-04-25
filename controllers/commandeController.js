@@ -79,7 +79,7 @@ const updateCommand = (req, res) => {
 const deleteCommand = (req, res) => {
   Commande.destroy({ where: { id: req.params.idCommand } })
     .then(() => {
-      res.send("Suppression de la commande effectué");
+      res.send("Suppression de la commande effectuée");
     })
     .catch((err) => res.send(err));
 };
