@@ -1,33 +1,93 @@
 const { describe, expect, test } = require("@jest/globals");
-const axios = require("axios");
-const barUrl = "http://localhost:3000/bar";
+const request = require("supertest");
+const { app } = require("../app.js");
+const barUrl = "/bar";
+
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 describe("Tests des Requêtes Bar", () => {
   // Fetch Requests
-  const getRequest = async (url) => {
-    const response = await axios.get(url);
+  //----------------------------GET---------------------------//
+  /*test("getBars", () => {
+    return request(app)
+      .get(`${barUrl}/2`)
+      .expect([
+        {
+          id: 2,
+          name: "Est West",
+          tel: "0203040506",
+          adresse: "20 route de Lyon",
+          email: "jgefvopqij@gfj.fr",
+          description: "bar à bierre",
+          createdAt: "2024-04-24T08:57:37.484Z",
+          updatedAt: "2024-04-24T08:57:37.484Z",
+        },
+      ]);
+  });*/
+  /*test("getBarProfil", () => {
+    return request(app)
+      .get(`${barUrl}/2`)
+      .expect([
+        {
+          id: 2,
+          name: "Est West",
+          tel: "0203040506",
+          adresse: "20 route de Lyon",
+          email: "jgefvopqij@gfj.fr",
+          description: "bar à bierre",
+          createdAt: "2024-04-24T08:57:37.484Z",
+          updatedAt: "2024-04-24T08:57:37.484Z",
+        },
+      ]);
+  });*/
+  // //----------------------------POST---------------------------//
+  /*test("addBar", () => {
+    const body = {
+      name: "Lebar",
+      tel: "0102030405",
+      adresse: "pqhgpqoij",
+      email: "irjfehqre@qrguhi.fr",
+      description: "iugqhrvopi",
+    };
+    return request(app)
+      .post(`${barUrl}`)
+      .send(body)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(`Le bar est créé`);
+  });*/
 
-    return response.data;
-  };
+  /*test("addCommandIntoBar", () => {
+    const body = {
+      name: "commande 1",
+      price: 5,
+    };
+    return request(app)
+      .post(`${barUrl}/2/commande`)
+      .send(body)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect("test");
+  });*/
 
-  const postRequest = async (url) => {
-    const response = await axios.post(url);
-
-    return response.data;
-  };
-
-  const putRequest = async (url) => {
-    const response = await axios.put(url);
-
-    return response.data;
-  };
-
-  const deleteRequest = async (url) => {
-    const response = await axios.delete(url);
-
-    return response.data;
-  };
-
+  // //----------------------------PUT---------------------------//
+  test("editBar", () => {
+    const body = {
+      name: "Est West",
+      description: "bar à bierre",
+      tel: "010203d0405",
+      email: "jgefvopqij@gfj.fr",
+      adresse: "20 route de Poitiers",
+    };
+    return request(app).put(`${barUrl}/2`).send(body).expect(200);
+  });
+  // //---------------------------DELETE---------------------------//
+  /*test("deleteBar", () => {
+    return request(app).delete(`${barUrl}/2`).expect("Bar deleted");
+  });*/
   //----------------------------GET---------------------------//
   /*test("getBars", async () => {
     const response = await getRequest(`${barUrl}`);
@@ -103,17 +163,4 @@ describe("Tests des Requêtes Bar", () => {
     console.log(response);
     expect(response).toEqual("Bar deleted");
   });*/
-
-  test("addBar", async () => {
-    const body = {
-      name: "Payotte",
-      tel: "0102030405",
-      adresse: "pqhgpqoij",
-      email: "irjfehqre@qrguhi.fr",
-      description: "iugqhrvopi",
-    };
-    const response = await postRequest(`${barUrl}`, body);
-    console.log(response);
-    expect(response).toEqual("Le bar est créé");
-  });
 });

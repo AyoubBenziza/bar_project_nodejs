@@ -54,8 +54,8 @@ const editbar = async (req, res) => {
     adresse: req.body.adresse,
   };
 
-  Bar.update(bar, { where: { id: req.params.barId } }).then((queryResult) =>
-    res.json(queryResult)
+  Bar.update(bar, { where: { id: req.params.barId } }).then(() =>
+    res.json(bar)
   );
 };
 
@@ -101,8 +101,7 @@ const getAllBeersFromBar = async (req, res) => {
 
 // Ajoute une commande dans un bar
 const addCommandeIntoBar = async (req, res) => {
-  console.log(`test`);
-  const commande = Commande.create({
+  const commande = await Commande.create({
     name: req.body.name,
     price: req.body.price,
     date: new Date(),
