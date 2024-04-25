@@ -6,7 +6,6 @@ const validateBarBody = [
   body("name").notEmpty().isString().withMessage("Name must be a string"),
   body("tel")
     .notEmpty()
-    .isMobilePhone("fr-FR")
     .withMessage(`Le numéro de téléphone doit être au format: 0102030404`),
   body("email")
     .notEmpty()
@@ -17,6 +16,7 @@ const validateBarBody = [
     .notEmpty()
     .isString()
     .withMessage("Description must be a string"),
+  body("adresse").notEmpty().isString().withMessage("adresse must be a string"),
 ];
 
 module.exports = { validateIdBar, validateBarBody };
