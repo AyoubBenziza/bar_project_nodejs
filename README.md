@@ -5,13 +5,13 @@
   - [Schéma de base de donnée](#schéma-de-base-de-donnée)
     - [Bars](#bars)
     - [Biere](#biere)
-    - [Biere\_Commande (table de liaison)](#biere_commande-table-de-liaison)
+    - [Biere_Commande (table de liaison)](#biere_commande-table-de-liaison)
     - [Commande](#commande)
   - [Liste des endpoints](#liste-des-endpoints)
     - [Bars](#bars-1)
     - [Biere](#biere-1)
     - [Commande](#commande-1)
-    - [Biere\_commande](#biere_commande)
+    - [Biere_commande](#biere_commande)
   - [Liste des endpoints avancés](#liste-des-endpoints-avancés)
   - [Liste des fichiers recommandés](#liste-des-fichiers-recommandés)
   - [Liste des modules à installer (recommendation)](#liste-des-modules-à-installer-recommendation)
@@ -26,6 +26,8 @@ Création d'une API pour un site de bars qui permet de gérer les bars, les bier
 Il permet aussi de faire des recherche avancées sur les biere et les commandes.
 
 ## Schéma de base de donnée
+
+![Database Schema](./BDD.png)
 
 ### Bars
 
